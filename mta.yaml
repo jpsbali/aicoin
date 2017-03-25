@@ -1,6 +1,6 @@
 _schema-version: '2.0'
 ID: aicoin
-description: Test aicoin application
+description: Multi-Target Application For AI_BlockChain
 version: 0.0.1
 
 modules:
@@ -20,8 +20,25 @@ modules:
          JBP_CONFIG_RESOURCE_CONFIGURATION: '[tomcat/webapps/ROOT/META-INF/context.xml:
             {"service_name_for_DefaultDB" : "~{hdi-container-name}"}]'
 
+
+ - name: S3AssetService
+   type: nodejs
+   path: S3AssetService
+   requires:
+    - name: my-fs
+    - name: hdi-container
+      properties:
+         JBP_CONFIG_RESOURCE_CONFIGURATION: '[tomcat/webapps/ROOT/META-INF/context.xml:
+            {"service_name_for_DefaultDB" : "~{hdi-container-name}"}]'
+
 resources:
  - name: hdi-container
+   parameters:
+      config:
+         schema: default
    properties:
       hdi-container-name: ${service-name}
    type: com.sap.xs.hdi-container
+
+ - name: my-fs
+   type: com.sap.xs.fs
