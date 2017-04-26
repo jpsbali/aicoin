@@ -1,7 +1,12 @@
 {
   "dependencies": {
     "sap-xsenv": "1.2.4",
-    "sap-xsjs": "1.11.4"
+    "sap-xsjs": "1.11.4",
+    "base-64": "0.1.0",
+	"utf8": "2.1.2",
+	"node-uuid": "1.4.8",
+	"multer": "1.3.0",
+    "aws-sdk": "2.4.8"
   },
   "devDependencies": {
     "sap-xsjs-test": "1.2.2"

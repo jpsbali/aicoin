@@ -31,6 +31,21 @@ modules:
          JBP_CONFIG_RESOURCE_CONFIGURATION: '[tomcat/webapps/ROOT/META-INF/context.xml:
             {"service_name_for_DefaultDB" : "~{hdi-container-name}"}]'
 
+
+ - name: TestNodeJS
+   type: nodejs
+   path: TestNodeJS
+
+
+ - name: HanaClient
+   type: java
+   path: HanaClient
+   requires:
+    - name: hdi-container
+      properties:
+         JBP_CONFIG_RESOURCE_CONFIGURATION: '[tomcat/webapps/ROOT/META-INF/context.xml:
+            {"service_name_for_DefaultDB" : "~{hdi-container-name}"}]'
+
 resources:
  - name: hdi-container
    parameters:

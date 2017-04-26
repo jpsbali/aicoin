@@ -1,12 +1,5 @@
 namespace "aicoin"."db";
 
 context blocks {
-   type KeyType : Integer;
 
-   entity temp {
-      key tempId  : KeyType;
-          tempVal : Integer      not null;
-          ts      : UTCTimestamp not null;
-          created : UTCTimestamp not null;
-   };
 };
