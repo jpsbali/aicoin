@@ -1,10 +1,9 @@
 package com.aicoin.hana.app.module;
 
-import com.aicoin.hana.app.json.*;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
+import org.json.*;
 
 import com.google.gson.Gson;
 
@@ -20,7 +19,7 @@ public class HanaClient implements Runnable {
 			clientEndPoint = new WebsocketClientEndpoint(new URI("ws://localhost:20000/wsticker"));
 			
             // Use a stateless JSON serializer/deserializer
-            Gson gson = new Gson();			
+            gson = new Gson();			
         } catch (URISyntaxException ex) {
             System.err.println("URISyntaxException exception: " + ex.getMessage());
         }			
@@ -41,29 +40,27 @@ public class HanaClient implements Runnable {
                     JSONObject jsonObj = new JSONObject(message);
 					if (jsonObj.has("hanaObjectType")) {
 	                    String objectType = jsonObj.getString("hanaObjectType");
-	                    System.out.println("Object type = " + objectType);
-	                    JSONObject hanaInfo = jsonObj.getJSONObject("hanaObject");
-	                    System.out.println("Object type = " + hanaInfo);
+	                    JSONObject objectValue = jsonObj.getJSONObject("hanaObject");
 	                    
 	                    //switch based on type to map to appropriate data sent over the wire.
 	                    switch (objectType) {
 		                    case "HanaBlockInfo":
-								HanaBlockInfo hanaBlockInfo = gson.fromJson(hanaInfo.toString(), HanaBlockInfo.class);
+								HanaBlockInfo hanaBlockInfo = gson.fromJson(objectValue.toString(), HanaBlockInfo.class);
 								System.out.println("hanaBlockInfo = " + hanaBlockInfo);	
 								//InsertBlockIntoHana(hanaBlockInfo);
 	                    		break;
 		                    case "HanaTransactionInfo":
-		                    	HanaTransactionInfo hanaTransactionInfo = gson.fromJson(hanaInfo.toString(), HanaTransactionInfo.class);
+		                    	HanaTransactionInfo hanaTransactionInfo = gson.fromJson(objectValue.toString(), HanaTransactionInfo.class);
 								System.out.println("hanaTransactionInfo = " + hanaTransactionInfo);	
 								//InsertTransactionIntoHana(hanaTransactionInfo);
 	            				break;
 		                    case "HanaTransactionInputInfo":
-		                    	HanaTransactionInputInfo hanaTransactionInputInfo = gson.fromJson(hanaInfo.toString(), HanaTransactionInputInfo.class);
+		                    	HanaTransactionInputInfo hanaTransactionInputInfo = gson.fromJson(objectValue.toString(), HanaTransactionInputInfo.class);
 								System.out.println("hanaTransactionInputInfo = " + hanaTransactionInputInfo);
 								//InsertTransactionInputIntoHana(hanaTransactionInputInfo);		                    	
 	            				break;
 							case "HanaTransactionOutputInfo":
-		                    	HanaTransactionOutputInfo hanaTransactionOutputInfo = gson.fromJson(hanaInfo.toString(), HanaTransactionOutputInfo.class);
+		                    	HanaTransactionOutputInfo hanaTransactionOutputInfo = gson.fromJson(objectValue.toString(), HanaTransactionOutputInfo.class);
 								System.out.println("hanaTransactionOutputInfo = " + hanaTransactionOutputInfo);		
 								//InsertTransactionOutputIntoHana(hanaTransactionOutputInfo);
 	            				break;
