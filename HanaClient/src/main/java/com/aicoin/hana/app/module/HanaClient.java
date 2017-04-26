@@ -50,22 +50,22 @@ public class HanaClient implements Runnable {
 		                    case "HanaBlockInfo":
 								HanaBlockInfo hanaBlockInfo = gson.fromJson(hanaInfo.toString(), HanaBlockInfo.class);
 								System.out.println("hanaBlockInfo = " + hanaBlockInfo);	
-								InsertBlockIntoHana(hanaBlockInfo);
+								//InsertBlockIntoHana(hanaBlockInfo);
 	                    		break;
 		                    case "HanaTransactionInfo":
 		                    	HanaTransactionInfo hanaTransactionInfo = gson.fromJson(hanaInfo.toString(), HanaTransactionInfo.class);
 								System.out.println("hanaTransactionInfo = " + hanaTransactionInfo);	
-								InsertTransactionIntoHana(hanaTransactionInfo);
+								//InsertTransactionIntoHana(hanaTransactionInfo);
 	            				break;
 		                    case "HanaTransactionInputInfo":
 		                    	HanaTransactionInputInfo hanaTransactionInputInfo = gson.fromJson(hanaInfo.toString(), HanaTransactionInputInfo.class);
 								System.out.println("hanaTransactionInputInfo = " + hanaTransactionInputInfo);
-								InsertTransactionInputIntoHana(hanaTransactionInputInfo);		                    	
+								//InsertTransactionInputIntoHana(hanaTransactionInputInfo);		                    	
 	            				break;
 							case "HanaTransactionOutputInfo":
 		                    	HanaTransactionOutputInfo hanaTransactionOutputInfo = gson.fromJson(hanaInfo.toString(), HanaTransactionOutputInfo.class);
 								System.out.println("hanaTransactionOutputInfo = " + hanaTransactionOutputInfo);		
-								InsertTransactionOutputIntoHana(hanaTransactionOutputInfo);
+								//InsertTransactionOutputIntoHana(hanaTransactionOutputInfo);
 	            				break;
 	            			default:
 								System.out.println("Failed to parse incoming object");

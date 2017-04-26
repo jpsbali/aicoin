@@ -27,7 +27,7 @@ public class HanaClientServlet extends HttpServlet {
 			writer.write("Started Hana AI Blockchain Listener !!");
 			writer.flush();
 			writer.close();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			throw new ServletException(e);
 		}
 	}
