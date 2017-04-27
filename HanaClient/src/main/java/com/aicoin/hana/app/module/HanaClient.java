@@ -47,22 +47,22 @@ public class HanaClient implements Runnable {
 		                    case "HanaBlockInfo":
 								HanaBlockInfo hanaBlockInfo = gson.fromJson(objectValue.toString(), HanaBlockInfo.class);
 								System.out.println("hanaBlockInfo = " + hanaBlockInfo);	
-								//InsertBlockIntoHana(hanaBlockInfo);
+								InsertBlockIntoHana(hanaBlockInfo);
 	                    		break;
 		                    case "HanaTransactionInfo":
 		                    	HanaTransactionInfo hanaTransactionInfo = gson.fromJson(objectValue.toString(), HanaTransactionInfo.class);
 								System.out.println("hanaTransactionInfo = " + hanaTransactionInfo);	
-								//InsertTransactionIntoHana(hanaTransactionInfo);
+								InsertTransactionIntoHana(hanaTransactionInfo);
 	            				break;
 		                    case "HanaTransactionInputInfo":
 		                    	HanaTransactionInputInfo hanaTransactionInputInfo = gson.fromJson(objectValue.toString(), HanaTransactionInputInfo.class);
 								System.out.println("hanaTransactionInputInfo = " + hanaTransactionInputInfo);
-								//InsertTransactionInputIntoHana(hanaTransactionInputInfo);		                    	
+								InsertTransactionInputIntoHana(hanaTransactionInputInfo);		                    	
 	            				break;
 							case "HanaTransactionOutputInfo":
 		                    	HanaTransactionOutputInfo hanaTransactionOutputInfo = gson.fromJson(objectValue.toString(), HanaTransactionOutputInfo.class);
 								System.out.println("hanaTransactionOutputInfo = " + hanaTransactionOutputInfo);		
-								//InsertTransactionOutputIntoHana(hanaTransactionOutputInfo);
+								InsertTransactionOutputIntoHana(hanaTransactionOutputInfo);
 	            				break;
 	            			default:
 								System.out.println("Failed to parse incoming object");
@@ -101,7 +101,7 @@ public class HanaClient implements Runnable {
 		if (hanaStatement != null) {
 			try {
 				System.out.println("Inserting records into the table BLOCK ...");
-				StringBuilder  sqlsb = new StringBuilder("insert into \"SAP_HANA_BLOCKCHAIN\".\"BLOCK\" values(");
+				StringBuilder  sqlsb = new StringBuilder("insert into \"aicoin.db::SAP_HANA_BLOCKCHAIN.BLOCK\" values(");
 				sqlsb.append(hanaBlockInfo.getBlockNumber());sqlsb.append(",");
 				sqlsb.append(hanaBlockInfo.getBlockVersion());sqlsb.append(",'");
 				sqlsb.append(hanaBlockInfo.getBlockMerkleRoot());sqlsb.append("','");
@@ -122,8 +122,8 @@ public class HanaClient implements Runnable {
 		if (hanaStatement != null) {
 			try {
 				System.out.println("Inserting records into the table TRANSACTION ...");
-				StringBuilder  sqlsb = new StringBuilder("insert into \"SAP_HANA_BLOCKCHAIN\".\"TRANSACTION\" values(");
-				sqlsb.append(hanaTransactionInfo.getBlockNumber());sqlsb.append(",'");
+				StringBuilder  sqlsb = new StringBuilder("insert into \"aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION\" values(");
+				sqlsb.append(hanaTransactionInfo.getBlockNumber());sqlsb.append(",");
 				sqlsb.append(hanaTransactionInfo.getTransactionIndex());sqlsb.append(",'");
 				sqlsb.append(hanaTransactionInfo.getTransactionId());sqlsb.append("',");
 				sqlsb.append(hanaTransactionInfo.getTransactionNoOfInputs());sqlsb.append(",");
@@ -143,7 +143,7 @@ public class HanaClient implements Runnable {
 		if (hanaStatement != null) {
 			try {
 				System.out.println("Inserting records into the table TRANSACTION INPUT ...");
-				StringBuilder  sqlsb = new StringBuilder("insert into \"SAP_HANA_BLOCKCHAIN\".\"TRANSACTION_INPUT\" values(");
+				StringBuilder  sqlsb = new StringBuilder("insert into \"aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_INPUT\" values(");
 				sqlsb.append(hanaTransactionInputInfo.getBlockNumber());sqlsb.append(",'");
 				sqlsb.append(hanaTransactionInputInfo.getTransactionIndex());sqlsb.append(",'");
 				sqlsb.append(hanaTransactionInputInfo.getTransactionId());sqlsb.append("',");
@@ -165,7 +165,7 @@ public class HanaClient implements Runnable {
 		if (hanaStatement != null) {
 			try {
 				System.out.println("Inserting records into the table TRANSACTION OUTPUT ...");
-				StringBuilder  sqlsb = new StringBuilder("insert into \"SAP_HANA_BLOCKCHAIN\".\"TRANSACTION_OUTPUT\" values(");
+				StringBuilder  sqlsb = new StringBuilder("insert into \"aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_OUTPUT\" values(");
 				sqlsb.append(hanaTransactionOutputInfo.getBlockNumber());sqlsb.append(",'");
 				sqlsb.append(hanaTransactionOutputInfo.getTransactionIndex());sqlsb.append(",'");
 				sqlsb.append(hanaTransactionOutputInfo.getTransactionId());sqlsb.append("',");

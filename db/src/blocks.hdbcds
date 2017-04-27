@@ -1,5 +1,0 @@
-namespace "aicoin"."db";
-
-context blocks {
-
-};
