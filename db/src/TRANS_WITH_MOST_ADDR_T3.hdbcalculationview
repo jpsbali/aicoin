@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="aicoin.db::ZTRANS_W_MOST_ADDR_CVIEW" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" defaultClient="$$client$$" visibility="reportingEnabled" outputViewType="Aggregation" calculationScenarioType="TREE_BASED" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
-<descriptions defaultDescription="ZTRANS_W_MOST_ADDR_CVIEW"/>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="aicoin.db::TRANS_WITH_MOST_ADDR_T3" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" defaultClient="$$client$$" visibility="reportingEnabled" outputViewType="Aggregation" calculationScenarioType="TREE_BASED" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="TRANS_WITH_MOST_ADDR_T3"/>
 <localVariables/>
 <variableMappings/>
 <dataSources>
-  <DataSource id="aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION">
+  <DataSource id="aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION" partitionedExecution="false">
     <resourceUri>aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION</resourceUri>
   </DataSource>
 </dataSources>
 <calculationViews>
-  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+  <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_1" partitionedExecution="false">
+    <viewAttributes>
+      <viewAttribute id="TRANSACTION_ID" measureType="simple">
+        <descriptions defaultDescription="TRANSACTION_ID"/>
+      </viewAttribute>
+      <viewAttribute id="TRANSACTION_NUMBER_OF_OUTPUTS" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="TRANSACTION_NUMBER_OF_OUTPUTS"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="Projection_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_ID" source="TRANSACTION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_NUMBER_OF_OUTPUTS" source="TRANSACTION_NUMBER_OF_OUTPUTS"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1" partitionedExecution="false">
     <viewAttributes>
       <viewAttribute id="TRANSACTION_ID" measureType="simple">
         <descriptions defaultDescription="TRANSACTION_ID"/>
@@ -36,7 +52,7 @@
     </viewAttributes>
     <calculatedViewAttributes/>
     <restrictedViewAttributes/>
-    <input node="Projection_1">
+    <input node="Aggregation_1">
       <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_ID" source="TRANSACTION_ID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_NUMBER_OF_OUTPUTS" source="TRANSACTION_NUMBER_OF_OUTPUTS"/>
     </input>
@@ -69,15 +85,21 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="40" y="85"/>
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="140"/>
     </shape>
-  
-    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="59" y="287"/>
+    <shape expanded="true" modelObjectName="Aggregation_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="322"/>
       <rectangleSize height="30" width="140"/>
     </shape>
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="427"/>
+      <rectangleSize height="30" width="140"/>
+    </shape>
+  
     <shape expanded="true" modelObjectName="Rank_1" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="69" y="206"/>
+      <upperLeftCorner x="170" y="205"/>
       <rectangleSize height="30" width="140"/>
     </shape>
   </shapes>
