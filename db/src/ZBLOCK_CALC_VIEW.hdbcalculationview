@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="aicoin.db::ZBLOCK_CALC_VIEW" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" defaultClient="$$client$$" visibility="reportingEnabled" outputViewType="Aggregation" calculationScenarioType="TREE_BASED" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="Block Calculation View"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="aicoin.db::SAP_HANA_BLOCKCHAIN.BLOCK">
+    <resourceUri>aicoin.db::SAP_HANA_BLOCKCHAIN.BLOCK</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+    <viewAttributes>
+      <viewAttribute id="BLOCK_NUMBER" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="BLOCK_NUMBER"/>
+      </viewAttribute>
+      <viewAttribute id="BLOCK_TIME" measureType="simple">
+        <descriptions defaultDescription="BLOCK_TIME"/>
+      </viewAttribute>
+      <viewAttribute id="BLOCK_NUMBER_OF_TRANSACTIONS" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="BLOCK_NUMBER_OF_TRANSACTIONS"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="aicoin.db::SAP_HANA_BLOCKCHAIN.BLOCK">
+      <mapping xsi:type="Calculation:AttributeMapping" target="BLOCK_NUMBER" source="BLOCK_NUMBER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BLOCK_TIME" source="BLOCK_TIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BLOCK_NUMBER_OF_TRANSACTIONS" source="BLOCK_NUMBER_OF_TRANSACTIONS"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:RankView" id="Rank_1">
+    <viewAttributes>
+      <viewAttribute id="BLOCK_NUMBER" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="BLOCK_NUMBER"/>
+      </viewAttribute>
+      <viewAttribute id="BLOCK_TIME" measureType="simple">
+        <descriptions defaultDescription="BLOCK_TIME"/>
+      </viewAttribute>
+      <viewAttribute id="BLOCK_NUMBER_OF_TRANSACTIONS" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="BLOCK_NUMBER_OF_TRANSACTIONS"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="Projection_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="BLOCK_NUMBER" source="BLOCK_NUMBER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BLOCK_TIME" source="BLOCK_TIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BLOCK_NUMBER_OF_TRANSACTIONS" source="BLOCK_NUMBER_OF_TRANSACTIONS"/>
+    </input>
+    <windowFunction dynamicPartitionAttributes="false">
+      <order byViewAttributeName="BLOCK_NUMBER_OF_TRANSACTIONS" direction="DESC"/>
+      <rankThreshold>
+        <value>10</value>
+      </rankThreshold>
+    </windowFunction>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Rank_1">
+  <attributes>
+    <attribute id="BLOCK_TIME" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="BLOCK_TIME"/>
+      <keyMapping columnObjectName="Rank_1" columnName="BLOCK_TIME"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="BLOCK_NUMBER" order="1" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="BLOCK_NUMBER"/>
+      <measureMapping columnObjectName="Rank_1" columnName="BLOCK_NUMBER"/>
+    </measure>
+    <measure id="BLOCK_NUMBER_OF_TRANSACTIONS" order="3" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="BLOCK_NUMBER_OF_TRANSACTIONS"/>
+      <measureMapping columnObjectName="Rank_1" columnName="BLOCK_NUMBER_OF_TRANSACTIONS"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="80" y="254"/>
+      <rectangleSize height="30" width="140"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Rank_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="75" y="173"/>
+      <rectangleSize height="30" width="140"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

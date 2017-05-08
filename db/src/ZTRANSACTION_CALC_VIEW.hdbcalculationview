@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="aicoin.db::ZTRANSACTION_CALC_VIEW" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" defaultClient="$$client$$" visibility="reportingEnabled" outputViewType="Aggregation" calculationScenarioType="TREE_BASED" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="ZTRANSACTION_CALC_VIEW"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_OUTPUT">
+    <resourceUri>aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_OUTPUT</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="TRANSACTION_ID_FK" measureType="simple">
+        <descriptions defaultDescription="TRANSACTION_ID_FK"/>
+      </viewAttribute>
+      <viewAttribute id="BLOCK_NUMBER_FK" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="BLOCK_NUMBER_FK"/>
+      </viewAttribute>
+      <viewAttribute id="ADDRESS" measureType="simple">
+        <descriptions defaultDescription="ADDRESS"/>
+      </viewAttribute>
+      <viewAttribute id="AMOUNT" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="AMOUNT"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_OUTPUT">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_ID_FK" source="TRANSACTION_ID_FK"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BLOCK_NUMBER_FK" source="BLOCK_NUMBER_FK"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADDRESS" source="ADDRESS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="AMOUNT" source="AMOUNT"/>
+    </input>
+    <filter>&quot;BLOCK_NUMBER_FK&quot; != 0</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:RankView" id="Rank_1">
+    <viewAttributes>
+      <viewAttribute id="TRANSACTION_ID_FK" measureType="simple">
+        <descriptions defaultDescription="TRANSACTION_ID_FK"/>
+      </viewAttribute>
+      <viewAttribute id="ADDRESS" measureType="simple">
+        <descriptions defaultDescription="ADDRESS"/>
+      </viewAttribute>
+      <viewAttribute id="AMOUNT" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="AMOUNT"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="Projection_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_ID_FK" source="TRANSACTION_ID_FK"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADDRESS" source="ADDRESS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="AMOUNT" source="AMOUNT"/>
+    </input>
+    <windowFunction>
+      <order byViewAttributeName="AMOUNT" direction="DESC"/>
+      <rankThreshold>
+        <value>10</value>
+      </rankThreshold>
+    </windowFunction>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Rank_1">
+  <attributes>
+    <attribute id="TRANSACTION_ID_FK" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TRANSACTION_ID_FK"/>
+      <keyMapping columnObjectName="Rank_1" columnName="TRANSACTION_ID_FK"/>
+    </attribute>
+    <attribute id="ADDRESS" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ADDRESS"/>
+      <keyMapping columnObjectName="Rank_1" columnName="ADDRESS"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="AMOUNT" order="3" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="AMOUNT"/>
+      <measureMapping columnObjectName="Rank_1" columnName="AMOUNT"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="77" y="278"/>
+      <rectangleSize height="30" width="140"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Rank_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="77" y="196"/>
+      <rectangleSize height="30" width="140"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

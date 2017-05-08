@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="3.0" id="aicoin.db::zaddr_test" applyPrivilegeType="NONE" defaultClient="$$client$$" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" outputViewType="Aggregation" cacheInvalidationPeriod="NONE">
+<descriptions defaultDescription="zaddr_test"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_OUTPUT">
+    <resourceUri>aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_OUTPUT</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+    <viewAttributes>
+      <viewAttribute id="ADDRESS" measureType="simple">
+        <descriptions defaultDescription="ADDRESS"/>
+      </viewAttribute>
+      <viewAttribute id="AMOUNT" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="AMOUNT"/>
+      </viewAttribute>
+      <viewAttribute id="BLOCK_NUMBER_FK" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="BLOCK_NUMBER_FK"/>
+      </viewAttribute>
+      <viewAttribute id="TRANSACTION_ID_FK" measureType="simple">
+        <descriptions defaultDescription="TRANSACTION_ID_FK"/>
+      </viewAttribute>
+      <viewAttribute id="TRANSACTION_INDEX_FK" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="TRANSACTION_INDEX_FK"/>
+      </viewAttribute>
+      <viewAttribute id="TRANSACTION_OUTPUT_INDEX" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="TRANSACTION_OUTPUT_INDEX"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_OUTPUT">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADDRESS" source="ADDRESS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="AMOUNT" source="AMOUNT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="BLOCK_NUMBER_FK" source="BLOCK_NUMBER_FK"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_ID_FK" source="TRANSACTION_ID_FK"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_INDEX_FK" source="TRANSACTION_INDEX_FK"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_OUTPUT_INDEX" source="TRANSACTION_OUTPUT_INDEX"/>
+    </input>
+  </calculationView>
+</calculationViews>
+<logicalModel>
+  <attributes/>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="82" y="227"/>
+      <rectangleSize height="30" width="140"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

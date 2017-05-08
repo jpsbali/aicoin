@@ -16,8 +16,8 @@ public class HanaClient implements Runnable {
 			hanaStatement = hanaDB.getHanaStatement();
 			
 			// open websocket
-			clientEndPoint = new WebsocketClientEndpoint(new URI("ws://localhost:20000/wsticker"));
-			
+			clientEndPoint = new WebsocketClientEndpoint(new URI("ws://aicoin.dyndns.org:20000/wsticker"));
+
             // Use a stateless JSON serializer/deserializer
             gson = new Gson();			
         } catch (URISyntaxException ex) {
@@ -37,7 +37,39 @@ public class HanaClient implements Runnable {
                 public void handleMessage(String message) {
                     System.out.println(message);
 
-                    JSONObject jsonObj = new JSONObject(message);
+					if (!message.contains("hanaBlockItems")) {
+						HanaBlockItem hanaBlockItem = gson.fromJson(message, HanaBlockItem.class);
+						
+						// First Block Level Information
+						HanaBlockInfo hanaBlockInfo = hanaBlockItem.getHanaBlockInfo();
+						System.out.println(hanaBlockInfo);
+						InsertBlockIntoHana(hanaBlockInfo);
+						
+						// Next ...
+						for (final HanaTransactionItem hanaTransactionItem : hanaBlockItem.getHanaTransactionItems()) {
+							// First Transaction Level Information
+							HanaTransactionInfo hanaTransactionInfo = hanaTransactionItem.getHanaTransactionInfo();
+							System.out.println(hanaTransactionInfo);	
+							InsertTransactionIntoHana(hanaTransactionInfo);
+							
+							// Then TransactionInputInfo Level Information
+							for (final HanaTransactionInputInfo hanaTransactionInputInfo : hanaTransactionItem.getHanaTransactionInputInfos()) {
+								System.out.println(hanaTransactionInputInfo);
+								InsertTransactionInputIntoHana(hanaTransactionInputInfo);
+							}
+							
+							// Then TransactionOutputInfo Level Information
+							for (final HanaTransactionOutputInfo hanaTransactionOutputInfo : hanaTransactionItem.getHanaTransactionOutputInfos()) {
+								System.out.println(hanaTransactionOutputInfo);
+								InsertTransactionOutputIntoHana(hanaTransactionOutputInfo);
+							}
+						}
+						
+						// Commit it to Hana
+						hanaDB.CommitToHana();
+					}
+
+                    /*JSONObject jsonObj = new JSONObject(message);
 					if (jsonObj.has("hanaObjectType")) {
 	                    String objectType = jsonObj.getString("hanaObjectType");
 	                    JSONObject objectValue = jsonObj.getJSONObject("hanaObject");
@@ -74,13 +106,14 @@ public class HanaClient implements Runnable {
                     }
                     else {
                     	System.out.println("Failed to parse incoming object " + jsonObj);
-					}		
+					}	
+					*/
                 }
             });
 
             // send message to websocket
-            clientEndPoint.sendMessage("{\"command\":\"startblock\", \"blockNumber\":\"" + GetStartBlockNumber() + "\"}");
-
+			clientEndPoint.sendMessage("{\"command\":\"getnewblock\", \"blockNumber\":\"1\", \"numberOfBlocks\":\"2\"}");
+			
             // wait forever
             Thread.currentThread().join();
 
@@ -144,11 +177,11 @@ public class HanaClient implements Runnable {
 			try {
 				System.out.println("Inserting records into the table TRANSACTION INPUT ...");
 				StringBuilder  sqlsb = new StringBuilder("insert into \"aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_INPUT\" values(");
-				sqlsb.append(hanaTransactionInputInfo.getBlockNumber());sqlsb.append(",'");
+				sqlsb.append(hanaTransactionInputInfo.getBlockNumber());sqlsb.append(",");
 				sqlsb.append(hanaTransactionInputInfo.getTransactionIndex());sqlsb.append(",'");
 				sqlsb.append(hanaTransactionInputInfo.getTransactionId());sqlsb.append("',");
-				sqlsb.append(hanaTransactionInputInfo.getTransactionInputIndex());sqlsb.append("',");				
-				sqlsb.append(hanaTransactionInputInfo.getParentTransactionId());sqlsb.append(",'");
+				sqlsb.append(hanaTransactionInputInfo.getTransactionInputIndex());sqlsb.append(",'");				
+				sqlsb.append(hanaTransactionInputInfo.getParentTransactionId());sqlsb.append("',");
 				sqlsb.append(hanaTransactionInputInfo.getIndexIntoParentTransaction());sqlsb.append(")");
 				System.out.println(sqlsb);
 				
@@ -166,11 +199,11 @@ public class HanaClient implements Runnable {
 			try {
 				System.out.println("Inserting records into the table TRANSACTION OUTPUT ...");
 				StringBuilder  sqlsb = new StringBuilder("insert into \"aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_OUTPUT\" values(");
-				sqlsb.append(hanaTransactionOutputInfo.getBlockNumber());sqlsb.append(",'");
+				sqlsb.append(hanaTransactionOutputInfo.getBlockNumber());sqlsb.append(",");
 				sqlsb.append(hanaTransactionOutputInfo.getTransactionIndex());sqlsb.append(",'");
 				sqlsb.append(hanaTransactionOutputInfo.getTransactionId());sqlsb.append("',");
-				sqlsb.append(hanaTransactionOutputInfo.getTransactionOutputIndex());sqlsb.append("',");				
-				sqlsb.append(hanaTransactionOutputInfo.getAddress());sqlsb.append(",'");
+				sqlsb.append(hanaTransactionOutputInfo.getTransactionOutputIndex());sqlsb.append(",'");				
+				sqlsb.append(hanaTransactionOutputInfo.getAddress());sqlsb.append("',");
 				sqlsb.append(hanaTransactionOutputInfo.getAmount());sqlsb.append(")");
 				System.out.println(sqlsb);
 				

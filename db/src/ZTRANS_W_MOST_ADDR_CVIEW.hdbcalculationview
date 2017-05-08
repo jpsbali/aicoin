@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="aicoin.db::ZTRANS_W_MOST_ADDR_CVIEW" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" defaultClient="$$client$$" visibility="reportingEnabled" outputViewType="Aggregation" calculationScenarioType="TREE_BASED" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="ZTRANS_W_MOST_ADDR_CVIEW"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION">
+    <resourceUri>aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+    <viewAttributes>
+      <viewAttribute id="TRANSACTION_ID" measureType="simple">
+        <descriptions defaultDescription="TRANSACTION_ID"/>
+      </viewAttribute>
+      <viewAttribute id="TRANSACTION_NUMBER_OF_OUTPUTS" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="TRANSACTION_NUMBER_OF_OUTPUTS"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_ID" source="TRANSACTION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_NUMBER_OF_OUTPUTS" source="TRANSACTION_NUMBER_OF_OUTPUTS"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:RankView" id="Rank_1">
+    <viewAttributes>
+      <viewAttribute id="TRANSACTION_ID" measureType="simple">
+        <descriptions defaultDescription="TRANSACTION_ID"/>
+      </viewAttribute>
+      <viewAttribute id="TRANSACTION_NUMBER_OF_OUTPUTS" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="TRANSACTION_NUMBER_OF_OUTPUTS"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="Projection_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_ID" source="TRANSACTION_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_NUMBER_OF_OUTPUTS" source="TRANSACTION_NUMBER_OF_OUTPUTS"/>
+    </input>
+    <windowFunction>
+      <order byViewAttributeName="TRANSACTION_NUMBER_OF_OUTPUTS" direction="DESC"/>
+      <rankThreshold>
+        <value>10</value>
+      </rankThreshold>
+    </windowFunction>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Rank_1">
+  <attributes>
+    <attribute id="TRANSACTION_ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TRANSACTION_ID"/>
+      <keyMapping columnObjectName="Rank_1" columnName="TRANSACTION_ID"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="TRANSACTION_NUMBER_OF_OUTPUTS" order="2" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="TRANSACTION_NUMBER_OF_OUTPUTS"/>
+      <measureMapping columnObjectName="Rank_1" columnName="TRANSACTION_NUMBER_OF_OUTPUTS"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="59" y="287"/>
+      <rectangleSize height="30" width="140"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Rank_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="69" y="206"/>
+      <rectangleSize height="30" width="140"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>
