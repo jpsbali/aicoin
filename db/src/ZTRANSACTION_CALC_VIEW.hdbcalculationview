@@ -4,12 +4,12 @@
 <localVariables/>
 <variableMappings/>
 <dataSources>
-  <DataSource id="aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_OUTPUT">
+  <DataSource id="aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_OUTPUT" partitionedExecution="false">
     <resourceUri>aicoin.db::SAP_HANA_BLOCKCHAIN.TRANSACTION_OUTPUT</resourceUri>
   </DataSource>
 </dataSources>
 <calculationViews>
-  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1" filterExpressionLanguage="SQL">
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1" filterExpressionLanguage="SQL" partitionedExecution="false">
     <viewAttributes>
       <viewAttribute id="TRANSACTION_ID_FK" measureType="simple">
         <descriptions defaultDescription="TRANSACTION_ID_FK"/>
@@ -34,7 +34,7 @@
     </input>
     <filter>&quot;BLOCK_NUMBER_FK&quot; != 0</filter>
   </calculationView>
-  <calculationView xsi:type="Calculation:RankView" id="Rank_1">
+  <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_1">
     <viewAttributes>
       <viewAttribute id="TRANSACTION_ID_FK" measureType="simple">
         <descriptions defaultDescription="TRANSACTION_ID_FK"/>
@@ -49,6 +49,26 @@
     <calculatedViewAttributes/>
     <restrictedViewAttributes/>
     <input node="Projection_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_ID_FK" source="TRANSACTION_ID_FK"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADDRESS" source="ADDRESS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="AMOUNT" source="AMOUNT"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:RankView" id="Rank_1">
+    <viewAttributes>
+      <viewAttribute id="TRANSACTION_ID_FK" measureType="simple">
+        <descriptions defaultDescription="TRANSACTION_ID_FK"/>
+      </viewAttribute>
+      <viewAttribute id="ADDRESS" measureType="simple">
+        <descriptions defaultDescription="ADDRESS"/>
+      </viewAttribute>
+      <viewAttribute id="AMOUNT" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="AMOUNT"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="Aggregation_1">
       <mapping xsi:type="Calculation:AttributeMapping" target="TRANSACTION_ID_FK" source="TRANSACTION_ID_FK"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ADDRESS" source="ADDRESS"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="AMOUNT" source="AMOUNT"/>
@@ -86,15 +106,21 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="40" y="85"/>
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="140"/>
     </shape>
   
     <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="77" y="278"/>
+      <upperLeftCorner x="92" y="427"/>
+      <rectangleSize height="30" width="140"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Aggregation_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="322"/>
       <rectangleSize height="30" width="140"/>
     </shape>
     <shape expanded="true" modelObjectName="Rank_1" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="77" y="196"/>
+      <upperLeftCorner x="92" y="217"/>
       <rectangleSize height="30" width="140"/>
     </shape>
   </shapes>

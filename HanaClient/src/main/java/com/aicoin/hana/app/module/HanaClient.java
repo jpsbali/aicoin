@@ -68,46 +68,6 @@ public class HanaClient implements Runnable {
 						// Commit it to Hana
 						hanaDB.CommitToHana();
 					}
-
-                    /*JSONObject jsonObj = new JSONObject(message);
-					if (jsonObj.has("hanaObjectType")) {
-	                    String objectType = jsonObj.getString("hanaObjectType");
-	                    JSONObject objectValue = jsonObj.getJSONObject("hanaObject");
-	                    
-	                    //switch based on type to map to appropriate data sent over the wire.
-	                    switch (objectType) {
-		                    case "HanaBlockInfo":
-								HanaBlockInfo hanaBlockInfo = gson.fromJson(objectValue.toString(), HanaBlockInfo.class);
-								System.out.println("hanaBlockInfo = " + hanaBlockInfo);	
-								InsertBlockIntoHana(hanaBlockInfo);
-	                    		break;
-		                    case "HanaTransactionInfo":
-		                    	HanaTransactionInfo hanaTransactionInfo = gson.fromJson(objectValue.toString(), HanaTransactionInfo.class);
-								System.out.println("hanaTransactionInfo = " + hanaTransactionInfo);	
-								InsertTransactionIntoHana(hanaTransactionInfo);
-	            				break;
-		                    case "HanaTransactionInputInfo":
-		                    	HanaTransactionInputInfo hanaTransactionInputInfo = gson.fromJson(objectValue.toString(), HanaTransactionInputInfo.class);
-								System.out.println("hanaTransactionInputInfo = " + hanaTransactionInputInfo);
-								InsertTransactionInputIntoHana(hanaTransactionInputInfo);		                    	
-	            				break;
-							case "HanaTransactionOutputInfo":
-		                    	HanaTransactionOutputInfo hanaTransactionOutputInfo = gson.fromJson(objectValue.toString(), HanaTransactionOutputInfo.class);
-								System.out.println("hanaTransactionOutputInfo = " + hanaTransactionOutputInfo);		
-								InsertTransactionOutputIntoHana(hanaTransactionOutputInfo);
-	            				break;
-	            			default:
-								System.out.println("Failed to parse incoming object");
-	            				break;
-	                    }
-
-						// Commit it to Hana
-						hanaDB.CommitToHana();
-                    }
-                    else {
-                    	System.out.println("Failed to parse incoming object " + jsonObj);
-					}	
-					*/
                 }
             });
 

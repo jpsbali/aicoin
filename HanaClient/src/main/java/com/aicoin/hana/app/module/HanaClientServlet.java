@@ -15,16 +15,19 @@ public class HanaClientServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private HanaClient hanaClient = null;
 
+	public void init() {
+		if (hanaClient == null) {
+			hanaClient = new HanaClient();
+			(new Thread(hanaClient)).start();	
+		}
+	}
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/plain; charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 
 		try (OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8")) {
-			if (hanaClient == null) {
-				hanaClient = new HanaClient();
-				(new Thread(hanaClient)).start();	
-			}
-			writer.write("Started Hana AI Blockchain Listener !!");
+			writer.write("Hana AI Blockchain Listener is Running!!");
 			writer.flush();
 			writer.close();
 		} catch (Exception e) {
