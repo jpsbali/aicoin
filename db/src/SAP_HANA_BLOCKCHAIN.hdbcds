@@ -1,39 +1,42 @@
 namespace "aicoin"."db";
 
-context SAP_HANA_BLOCKCHAIN{
-	type KeyType : Integer;
-   
-	entity BLOCK {
-		key BLOCK_NUMBER : KeyType;
-		BLOCK_VERSION : hana.SMALLINT NOT NULL;
-		BLOCK_MERKLE_ROOT : String(100) NOT NULL;
-		BLOCK_TIME : String(100) NOT NULL;
-		BLOCK_NUMBER_OF_TRANSACTIONS : Integer NOT NULL;
-	};
-	                            
-	entity TRANSACTION {
-		BLOCK_NUMBER_FK : Integer NOT NULL;
-		TRANSACTION_INDEX : Integer NOT NULL;
-		TRANSACTION_ID : String(100) NOT NULL;
-		TRANSACTION_NUMBER_OF_INPUTS : hana.SMALLINT NOT NULL;
-		TRANSACTION_NUMBER_OF_OUTPUTS : hana.SMALLINT NOT NULL;
-	};
-	
-	entity TRANSACTION_INPUT {
-		BLOCK_NUMBER_FK : Integer NOT NULL;
-		TRANSACTION_INDEX_FK : Integer NOT NULL;
-		TRANSACTION_ID_FK : String(100) NOT NULL;
-		TRANSACTION_INPUT_INDEX : Integer NOT NULL;
-		PARENT_TRANSACTION_ID_FK : String(100) NOT NULL;
-		INDEX_INTO_PARENT_TRANSACTION : Integer NOT NULL;
-	};
-	
-	entity TRANSACTION_OUTPUT {
-		BLOCK_NUMBER_FK : Integer NOT NULL;
-		TRANSACTION_INDEX_FK : Integer NOT NULL;
-		TRANSACTION_ID_FK : String(100) NOT NULL;
-		TRANSACTION_OUTPUT_INDEX : Integer NOT NULL;
-		ADDRESS : String(100) NOT NULL;
-		AMOUNT : Double NOT NULL;
-	};
+context SAP_HANA_BLOCKCHAIN {
+   type KeyType : Integer;
+
+   entity BLOCK {
+      key BLOCK_NUMBER                 : KeyType;
+          BLOCK_VERSION                : hana.SMALLINT not null;
+          BLOCK_MERKLE_ROOT            : String(100)   not null;
+          BLOCK_TIME                   : String(100)   not null;
+          BLOCK_NUMBER_OF_TRANSACTIONS : Integer       not null;
+   };
+   entity TRANSACTION {
+      BLOCK_NUMBER_FK               : Integer       not null;
+      TRANSACTION_INDEX             : Integer       not null;
+      TRANSACTION_ID                : String(100)   not null;
+      TRANSACTION_NUMBER_OF_INPUTS  : hana.SMALLINT not null;
+      TRANSACTION_NUMBER_OF_OUTPUTS : hana.SMALLINT not null;
+   };
+   entity TRANSACTION_INPUT {
+      BLOCK_NUMBER_FK               : Integer     not null;
+      TRANSACTION_INDEX_FK          : Integer     not null;
+      TRANSACTION_ID_FK             : String(100) not null;
+      TRANSACTION_INPUT_INDEX       : Integer     not null;
+      PARENT_TRANSACTION_ID_FK      : String(100) not null;
+      INDEX_INTO_PARENT_TRANSACTION : Integer     not null;
+   };
+   entity TRANSACTION_OUTPUT {
+      BLOCK_NUMBER_FK          : Integer     not null;
+      TRANSACTION_INDEX_FK     : Integer     not null;
+      TRANSACTION_ID_FK        : String(100) not null;
+      TRANSACTION_OUTPUT_INDEX : Integer     not null;
+      ADDRESS                  : String(100) not null;
+      AMOUNT                   : Double      not null;
+   };
+   entity AIBC_ASSET {
+      key ASSET_ID : KeyType;
+   };
+   entity AIBC_FAULT {
+      key FAULT_ID : KeyType;
+   };
 };

@@ -1,0 +1,5 @@
+service {
+	"aicoin.db::SAP_HANA_BLOCKCHAIN.FAULT" as "fault" 
+		create using "inc:faultCreate.xsjslib::faultCreate"
+	;
+}
