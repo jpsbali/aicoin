@@ -2,4 +2,9 @@ service {
 	"aicoin.db::SAP_HANA_BLOCKCHAIN.FAULT" as "fault" 
 		create using "inc:faultCreate.xsjslib::faultCreate"
 	;
+	"aicoin.db::SAP_HANA_BLOCKCHAIN.BLOCK" as "block" 
+	;
+	"aicoin.db::SAP_HANA_BLOCKCHAIN.DIAMOND" as "diamond" 
+		create using "inc:diamondCreate.xsjslib::diamondCreate"
+	;
 }

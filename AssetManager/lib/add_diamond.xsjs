@@ -1,5 +1,3 @@
-
-
 $.response.contentType = "text/html";
 var body = "";
 
@@ -12,8 +10,8 @@ body += "\n";
 body += "var request_output = \"\";\n";
 body += "\n";
 body += "var xhr = new XMLHttpRequest();\n";
-body += "xhr.open('POST', 'fault.xsodata/fault');\n";
-body += "request_output += \"POST to fault.xsodata/fault \\n\";\n";
+body += "xhr.open('POST', 'fault.xsodata/diamond');\n";
+body += "request_output += \"POST to fault.xsodata/diamond \\n\";\n";
 body += "xhr.setRequestHeader('Content-Type', 'application/json');\n";
 body += "request_output += \"Request Header: Content-Type = application/json \\n\";\n";
 body += "xhr.setRequestHeader('Accept', 'application/json');\n";
@@ -40,12 +38,24 @@ body += "};\n";
 body += "\n";
 body += "var request_obj = \n";
 body += "{\n";
-body += "   \"FAULT_ID\": 0,\n";
-body += "   \"ASSET_ID\": 1001,\n";
-body += "   \"FAULT_TEXT\": \"ROOF LEAKAGE\",\n";
-body += "   \"FAULT_SIGNATURE\": \"1001_8EDD06F21D6243FD92CA9FD2F2FED431d57320\",\n";
-body += "   \"FAULT_STATUS\": \"O\",\n";
-body += "   \"FAULT_AIBC_STATUS\": \"I\",\n";
+body += "   \"DIAMOND_ID\": 0,\n";
+body += "   \"DESCRIPTION\": \"A\",\n";
+body += "   \"CUT\": \"B\",\n";
+body += "   \"COLOR\": \"C\",\n";
+body += "   \"CLARITY\": \"D\",\n";
+body += "   \"CARAT\": \"E\",\n";
+body += "   \"SHAPE\": \"F\",\n";
+body += "   \"CERTIFICATION\": \"G\",\n";
+body += "   \"QUALITY\": \"H\",\n";
+body += "   \"WEIGHT\": \"I\",\n";
+body += "   \"MEASUREMENTS\": \"J\",\n";
+body += "   \"ITEMID\": \"K\",\n";
+body += "   \"EMAIL\": \"L\",\n";
+body += "   \"AIBC_TRANS\": \"M\",\n";
+body += "   \"ROWHASH\": \"1001_8EDD06F21D6243FD92CA9FD2F2FED431AABBCC\",\n";
+body += "   \"STATUS\": \"NEW\",\n";
+body += "   \"ACCTID\": \"P\",\n";
+body += "   \"AIBC_STATUS\": \"N\",\n";
 body += "};\n";
 body += "\n";
 body += "</script>\n";

@@ -1,0 +1,17 @@
+{
+  "welcomeFile": "index.html",
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "(.*)(.xsodata)",
+      "destination": "asset_be", 
+	  "csrfProtection": false,
+	  "authenticationType": "basic"
+    },
+    {
+      "localDir": "resources",
+      "source": "^/(.*)", 
+	  "authenticationType": "none"
+    }
+  ]
+}
